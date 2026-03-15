@@ -1,7 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.routers import courses, schedules
 
 app = FastAPI()
+app.include_router(courses.router)
+app.include_router(schedules.router)
 
 app.add_middleware(
     CORSMiddleware,
