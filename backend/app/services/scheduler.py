@@ -26,16 +26,25 @@ def _has_conflict(sec_a: Section, sec_b: Section) -> bool:
 
 
 def _score(sections: list[Section]) -> int:
-    score = 100
+    # Professor ratings are the dominant factor: each section contributes up to 100 points
+    # Rating scale is 1.0-5.0, mapped to 0-100. Unrated professors incur a 30-point penalty.
+    rating_score = 0
+    for s in sections:
+        if s.rating is None:
+            rating_score -= 30
+        else:
+            rating_score += round((s.rating - 1) / 4 * 100)
+
+    penalty = 0
 
     for sec in sections:
         # Penalty: early class before 09:00
         if _parse_time(sec.start_time).hour < 9:
-            score -= 10
+            penalty += 25
 
         # Penalty: class on Friday
         if "F" in sec.days:
-            score -= 5
+            penalty += 15
 
     # Penalty: long gaps between classes on the same day (>2 hours)
     for day in "MTWRF":
@@ -47,13 +56,9 @@ def _score(sections: list[Section]) -> int:
                 - _parse_time(day_sections[i].end_time)
             ).total_seconds() / 60
             if gap_minutes > 120:
-                score -= 5
+                penalty += 20
 
-    # Bonus: professor rating (avg rating scaled to 0-20 bonus points)
-    avg_rating = sum(s.rating for s in sections) / len(sections)
-    score += round((avg_rating - 1) / 4 * 20)
-
-    return score
+    return rating_score - penalty
 
 
 def generate_schedules(course_codes: list[str], db: Session) -> list[ScheduleResult]:

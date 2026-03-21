@@ -14,7 +14,7 @@ class Section(BaseModel):
     start_time: str  # e.g. "10:00"
     end_time: str    # e.g. "11:15"
     professor: str
-    rating: float    # 1.0 - 5.0
+    rating: float | None  # 1.0 - 5.0, None if not rated
 
 
 class ScheduleRequest(BaseModel):

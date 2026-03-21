@@ -19,4 +19,4 @@ class Section(Base):
     start_time = Column(String, nullable=False)
     end_time   = Column(String, nullable=False)
     professor  = Column(String, nullable=False)
-    rating     = Column(Float,  nullable=False)
+    rating     = Column(Float,  nullable=True)

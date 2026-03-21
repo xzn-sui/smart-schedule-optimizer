@@ -29,13 +29,24 @@ DEPARTMENTS = [
     "HIST",   # History
 ]
 
-# Cache so the same professor always gets the same rating
-professor_ratings: dict[str, float] = {}
+# Cache so we don't hit PlanetTerp repeatedly for the same professor
+professor_ratings: dict[str, float | None] = {}
 
-def get_professor_rating(name: str) -> float:
-    if name not in professor_ratings:
-        import random
-        professor_ratings[name] = round(random.uniform(2.5, 5.0), 1)
+def get_professor_rating(name: str) -> float | None:
+    if name in professor_ratings:
+        return professor_ratings[name]
+    try:
+        res = requests.get(
+            "https://planetterp.com/api/v1/professor",
+            params={"name": name},
+            timeout=5,
+        )
+        if res.status_code == 200:
+            professor_ratings[name] = res.json().get("average_rating")
+        else:
+            professor_ratings[name] = None
+    except Exception:
+        professor_ratings[name] = None
     return professor_ratings[name]
 
 
