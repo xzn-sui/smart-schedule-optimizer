@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
-const API = 'http://localhost:8000'
+const API = 'http://ec2-3-144-153-97.us-east-2.compute.amazonaws.com:8000'
 const GRID_START = 8 * 60   // 8:00 AM
 const GRID_END = 19 * 60    // 7:00 PM
 const PX_PER_MIN = 0.9
