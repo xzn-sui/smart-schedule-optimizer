@@ -35,6 +35,9 @@ function formatHour(h) {
 }
 
 function StarRating({ rating }) {
+  if (rating === null || rating === undefined) {
+    return <span style={{ color: '#718096', fontWeight: 600 }}>No rating</span>
+  }
   const color = rating >= 4.0 ? '#2c7a4b' : rating >= 3.0 ? '#b7791f' : '#c53030'
   return <span style={{ color, fontWeight: 600 }}>★ {rating.toFixed(1)}</span>
 }
