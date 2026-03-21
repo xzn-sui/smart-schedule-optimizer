@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:umd.edu)",
+      "WebFetch(domain:umd.io)",
+      "Bash(PGCLIENTENCODING=UTF8 ./venv/Scripts/python.exe:*)",
+      "Bash(PGPASSWORD=mylele618 \"/c/Program Files/PostgreSQL/18/bin/psql\":*)",
+      "WebFetch(domain:api.umd.io)"
+    ]
+  }
+}
